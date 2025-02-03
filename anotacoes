@@ -1,0 +1,99 @@
+Claro! Um **inventário de dados** é uma ferramenta essencial para catalogar e entender os dados disponíveis na empresa. Ele serve como um "mapa" dos dados, ajudando a identificar fontes, estruturas, responsáveis e a qualidade das informações. Abaixo, vou mostrar um modelo de como você pode estruturar um inventário de dados.
+
+---
+
+### **Modelo de Inventário de Dados**
+
+| **Campo**                | **Descrição**                                                                 | **Exemplo**                              |
+|--------------------------|-------------------------------------------------------------------------------|------------------------------------------|
+| **Nome da Fonte**        | Nome da fonte de dados (sistema, planilha, banco de dados, etc.).             | Sistema ERP, Planilha de Vendas, etc.    |
+| **Tipo de Fonte**        | Tipo da fonte (banco de dados, API, arquivo CSV, Excel, etc.).                | SQL Server, CSV, API REST, etc.          |
+| **Localização**          | Onde a fonte está armazenada (servidor, diretório, nuvem, etc.).              | Servidor SQL01, Google Drive, etc.       |
+| **Tabela/Arquivo**       | Nome da tabela, arquivo ou conjunto de dados.                                 | Tabela "Vendas", Arquivo "Clientes.csv". |
+| **Descrição**            | Descrição do propósito ou conteúdo da fonte.                                  | "Contém dados de vendas mensais."        |
+| **Colunas/Campos**       | Lista de colunas ou campos presentes na fonte.                                | ProdutoID, Nome, Quantidade, Preço, etc. |
+| **Tipo de Dados**        | Tipo de dados de cada campo (texto, número, data, etc.).                      | INT, VARCHAR, DECIMAL, DATETIME, etc.    |
+| **Chave Primária**       | Campo(s) que identificam unicamente cada registro.                            | ProdutoID, ClienteID, etc.               |
+| **Frequência de Atualização** | Com que frequência os dados são atualizados (diário, semanal, mensal, etc.). | Diário, Semanal, etc.                    |
+| **Responsável**          | Pessoa ou equipe responsável pela fonte de dados.                             | Equipe de Vendas, TI, etc.               |
+| **Qualidade dos Dados**  | Avaliação da qualidade dos dados (alta, média, baixa) e observações.          | "Alta, mas faltam dados de 2022."        |
+| **Sensibilidade**        | Classificação de sensibilidade (público, interno, confidencial, etc.).        | Confidencial, Interno, etc.              |
+| **Dependências**         | Outras fontes ou sistemas que dependem desses dados.                          | Sistema de BI, Relatórios Financeiros.   |
+| **Problemas Conhecidos** | Problemas ou inconsistências conhecidas nos dados.                            | "Duplicidade de registros."              |
+
+---
+
+### **Exemplo Prático de Inventário de Dados**
+
+Aqui está um exemplo preenchido para uma empresa fictícia:
+
+| **Campo**                | **Exemplo**                              |
+|--------------------------|------------------------------------------|
+| **Nome da Fonte**        | Sistema ERP                             |
+| **Tipo de Fonte**        | Banco de Dados (SQL Server)             |
+| **Localização**          | Servidor SQL01                          |
+| **Tabela/Arquivo**       | Tabela "Produtos"                       |
+| **Descrição**            | "Contém informações sobre os produtos cadastrados no sistema." |
+| **Colunas/Campos**       | ProdutoID, Nome, Categoria, Preço, DataCadastro |
+| **Tipo de Dados**        | INT, VARCHAR(100), VARCHAR(50), DECIMAL(18,2), DATETIME |
+| **Chave Primária**       | ProdutoID                               |
+| **Frequência de Atualização** | Diário                                |
+| **Responsável**          | Equipe de TI                            |
+| **Qualidade dos Dados**  | "Alta, mas alguns preços estão desatualizados." |
+| **Sensibilidade**        | Interno                                 |
+| **Dependências**         | Sistema de Vendas, Relatórios de Estoque |
+| **Problemas Conhecidos** | "Alguns produtos estão sem categoria."  |
+
+---
+
+### **Como Implementar o Inventário de Dados**
+
+1. **Coleta de Informações:**
+   - Reúna informações sobre todas as fontes de dados da empresa.
+   - Entreviste as equipes responsáveis por cada sistema ou conjunto de dados.
+
+2. **Documentação:**
+   - Utilize uma planilha (Excel, Google Sheets) ou ferramentas de catalogação de dados (como Azure Purview, Alation, ou Collibra) para criar o inventário.
+   - Mantenha o inventário atualizado à medida que novas fontes de dados são criadas ou alteradas.
+
+3. **Automatização (Opcional):**
+   - Para grandes volumes de dados, você pode criar scripts ou usar ferramentas de metadata management para automatizar a coleta de informações (por exemplo, consultando metadados diretamente do SQL Server).
+
+4. **Governança:**
+   - Defina um responsável pelo inventário de dados.
+   - Estabeleça processos para revisão e atualização periódica do inventário.
+
+---
+
+### **Exemplo de Query para Extrair Metadados do SQL Server**
+
+Se você estiver usando SQL Server, pode usar consultas para extrair metadados das tabelas e alimentar o inventário:
+
+```sql
+SELECT 
+    t.name AS TableName,
+    c.name AS ColumnName,
+    ty.name AS DataType,
+    c.max_length AS MaxLength,
+    c.is_nullable AS IsNullable
+FROM 
+    sys.tables t
+JOIN 
+    sys.columns c ON t.object_id = c.object_id
+JOIN 
+    sys.types ty ON c.user_type_id = ty.user_type_id
+WHERE 
+    t.name = 'Produtos';  -- Substitua pelo nome da tabela
+```
+
+Essa query retorna informações sobre as colunas de uma tabela específica, como nome, tipo de dados e tamanho.
+
+---
+
+### **Benefícios do Inventário de Dados**
+- **Visibilidade:** Saber onde estão os dados e quem é responsável por eles.
+- **Consistência:** Identificar e corrigir inconsistências.
+- **Eficiência:** Facilitar a integração de dados e a criação de relatórios.
+- **Governança:** Melhorar a gestão e a segurança dos dados.
+
+Se precisar de mais detalhes ou ajuda para implementar, é só avisar! 😊
